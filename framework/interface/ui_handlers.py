@@ -449,4 +449,4 @@ class FileRedirectHandler(custom_handlers.UIRequestHandler):
                 config.FrameworkConfigGet("UI_SERVER_PORT"),
                 config.FrameworkConfigGet("FILE_SERVER_PORT")))
         redirect_file_url = output_files_server + quote_plus(file_url, safe='/')
-        self.redirect(redirect_file_url, permanent=False)
+	self.redirect(redirect_file_url, permanent=True)
