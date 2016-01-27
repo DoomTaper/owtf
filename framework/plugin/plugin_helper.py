@@ -139,6 +139,7 @@ class PluginHelper(BaseComponent):
         self.timer.start_timer('FormatCommandAndOutput')
         ModifiedCommand = self.shell.GetModifiedShellCommand(Command, PluginOutputDir)
         try:
+	    print(1212)
             RawOutput = self.shell.shell_exec_monitor(ModifiedCommand, PluginInfo)
         except PluginAbortException, PartialOutput:
             RawOutput = str(PartialOutput.parameter)  # Save Partial Output
@@ -246,17 +247,18 @@ class PluginHelper(BaseComponent):
         RobotsFound = True
         if 0 == num_allow and 0 == num_disallow and 0 == num_sitemap:
             RobotsFound = False
-            return [num_lines, AllowedEntries, num_allow, DisallowedEntries, num_disallow, SitemapEntries, num_sitemap,
-                    RobotsFound]
+	    print("in if of above....")
+        return [num_lines, AllowedEntries, num_allow, DisallowedEntries, num_disallow, SitemapEntries, num_sitemap, RobotsFound]
 
 
     def ProcessRobots(self, PluginInfo, Contents, LinkStart, LinkEnd, Filename='robots.txt'):
+	print("in ProcessRobots..........")
         plugin_output = dict(PLUGIN_OUTPUT)
         plugin_output["type"] = "Robots"
         num_lines, AllowedEntries, num_allow, DisallowedEntries, num_disallow, SitemapEntries, num_sitemap, NotStr = self.AnalyseRobotsEntries(
             Contents)
         SavePath = self.plugin_handler.DumpOutputFile(Filename, Contents, PluginInfo, True)
-        TopURL = self.target.Get('TOP_URL')
+        TopURL = self.target.Get('top_url')
         EntriesList = []
         if num_disallow > 0 or num_allow > 0 or num_sitemap > 0:  # robots.txt contains some entries, show browsable list! :)
             self.url_manager.AddURLsStart()
@@ -284,6 +286,7 @@ class PluginHelper(BaseComponent):
                                            "NumAddedURLs": NumAddedURLs,
                                            "EntriesList": EntriesList
                 }
+		print("Returning..................")
                 return ([plugin_output])
 
     def TransactionTable(self, transactions_list):

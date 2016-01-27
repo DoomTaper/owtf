@@ -28,6 +28,8 @@ class POutputDB(BaseComponent, PluginOutputInterface):
 
     def DeriveHTMLOutput(self, plugin_output):
         Content = ''
+	#print(plugin_output)
+	print("in DeriveHTMLOutput")
         for item in plugin_output:
             Content += getattr(
                 self.reporter,
@@ -39,6 +41,7 @@ class POutputDB(BaseComponent, PluginOutputInterface):
         if target_id:
             self.target.SetTarget(target_id)
         if obj:
+	    print("in if of DeriveOutputDict")
             pdict = dict(obj.__dict__)
             pdict.pop("_sa_instance_state", None)
             pdict.pop("date_time")
@@ -123,6 +126,7 @@ class POutputDB(BaseComponent, PluginOutputInterface):
 
     @target_required
     def GetAll(self, filter_data=None, target_id=None):
+	print("in poutput_nmanager.py/getall")
         if not filter_data:
             filter_data = {}
         self.target.SetTarget(target_id)

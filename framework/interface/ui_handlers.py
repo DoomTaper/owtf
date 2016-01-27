@@ -332,6 +332,7 @@ class PluginOutput(custom_handlers.UIRequestHandler):
     SUPPORTED_METHODS = ['GET']
 
     def get(self, target_id=None):
+	print("in PluginOutput")
         if not target_id:
             raise tornado.web.HTTPError(400)
         try:
@@ -368,7 +369,6 @@ class PluginOutput(custom_handlers.UIRequestHandler):
                     except KeyError:
                         pass
                 test_groups[test_group['code']] = test_group
-
             self.render("plugin_report.html",
                         grouped_plugin_outputs=grouped_plugin_outputs,
                         test_groups=test_groups,
@@ -441,7 +441,8 @@ class FileRedirectHandler(custom_handlers.UIRequestHandler):
     SUPPORTED_METHODS = ('GET')
 
     def get(self, file_url):
-	file_url = file_url[1:]
+	#file_url = file_url[1:]
+	print "lol"
         config = ServiceLocator.get_component("config")
         output_files_server = "%s://%s/" % (
             self.request.protocol,

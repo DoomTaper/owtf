@@ -24,6 +24,7 @@ sudo -E "$apt_wrapper_path" postgresql-server-dev-all postgresql-client postgres
 sudo -E "$apt_wrapper_path" libcurl4-openssl-dev
 
 ############ Tools missing in Kali
+sudo -E apt-get install metagoofil
 #mkdir -p $RootDir/tools/restricted
 #cd $RootDir/tools/restricted
 #IsInstalled "w3af"

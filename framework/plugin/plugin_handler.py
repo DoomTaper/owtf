@@ -257,7 +257,9 @@ class PluginHandler(BaseComponent, PluginHandlerInterface):
     def RunPlugin(self, PluginDir, Plugin, save_output=True):
         PluginPath = self.GetPluginFullPath(PluginDir, Plugin)
         (Path, Name) = os.path.split(PluginPath)
+	print("before Plugin Output................")
         PluginOutput = self.GetModule("", Name, Path + "/").run(Plugin)
+	print("after Plugin Output................")
         return PluginOutput
 
     @staticmethod
@@ -355,6 +357,7 @@ class PluginHandler(BaseComponent, PluginHandlerInterface):
         try:
             output = self.RunPlugin(plugin_dir, plugin)
             status_msg = 'Successful'
+	    print(status_msg)
             status['SomeSuccessful'] = True
         except KeyboardInterrupt:
             # Just explain why crashed.
@@ -391,6 +394,7 @@ class PluginHandler(BaseComponent, PluginHandlerInterface):
             plugin['owtf_rank'] = self.rank_plugin(output, self.GetPluginOutputDir(plugin))
             if status_msg == 'Successful':
                 self.plugin_output.SavePluginOutput(plugin, output)
+	     	print("ending the if of status msg.......")
             else:
                 self.plugin_output.SavePartialPluginOutput(
                     plugin,
