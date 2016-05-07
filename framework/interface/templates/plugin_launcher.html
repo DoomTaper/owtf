@@ -42,7 +42,7 @@ The above module tag is taken from target.html
             <table id="pluginLaunchTable" class="table table-hover table-striped table-bordered dt-responsive">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="pluginLauncherSelectAllCheckbox" onclick="toggleAll(this);"/></th>
+                        <th><input type="checkbox" id="pluginLauncherSelectAllCheckbox" onclick="ToggleAll(this);"/></th>
                         <th>Code</th>
                         <th>Name</th>
                         <th>Type</th>
@@ -98,7 +98,7 @@ The above module tag is taken from target.html
 var pluginLaunchTable;
 
 // Toggle all checkboxes when select all is clicked
-function toggleAll(checkbox){
+function ToggleAll(checkbox){
     var table= $(checkbox).closest('table');
     $('td input:checkbox',table).prop('checked',checkbox.checked);
 }

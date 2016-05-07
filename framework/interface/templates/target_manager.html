@@ -142,7 +142,7 @@ function updateSelectionCount() {
 // Ensure an element is (state=true) or is not (state=false) in array 
 function setArrayElement(array, element, state) {
     var index = array.indexOf(element);
-    if (index === -1 && state && !isNaN(element)) {
+    if (index === -1 && state) {
         array.push(element);
     } else if (index !== -1 && !state) {
         array.splice(index,1);
