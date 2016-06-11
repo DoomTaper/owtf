@@ -3,9 +3,6 @@
 The DB stores worklist
 '''
 
-import logging
-
-from sqlalchemy import exc
 from sqlalchemy.sql import not_
 
 from framework.db import models
@@ -14,9 +11,9 @@ from framework.lib import exceptions
 
 
 class WorklistManager(BaseComponent):
-    
+
     COMPONENT_NAME = "worklist_manager"
-    
+
     def __init__(self):
         self.register_in_service_locator()
         self.db = self.get_component("db")
@@ -55,7 +52,7 @@ class WorklistManager(BaseComponent):
                 if isinstance(criteria.get('id'), list):
                     query = query.filter(models.Work.target_id.in_(criteria.get('id')))
                 if isinstance(criteria.get('id'), (str, unicode)):
-                    query = query.filter_by(target_id = int(criteria.get('id')))
+                    query = query.filter_by(target_id=int(criteria.get('id')))
             if not for_stats:
                 if criteria.get('offset', None):
                     if isinstance(criteria.get('offset'), list):
@@ -108,15 +105,26 @@ class WorklistManager(BaseComponent):
             raise exceptions.InvalidWorkReference("No work with id %s" % str(work_id))
         return self._derive_work_dict(work)
 
+    def group_sort_order(self, plugin_list):
+        # TODO: Fix for individual plugins
+        # Right now only for plugin groups launched not individual plugins
+        # Giving priority to plugin type based on type
+        # Higher priority == run first!
+        priority = {"grep": -1, "bruteforce": 0, "active": 1, "semi_passive": 2, "passive": 3, "external": 4}
+        # reverse = True so that descending order is maintained
+        sorted_plugin_list = sorted(plugin_list, key=lambda k: priority[k['type']], reverse=True)
+        return sorted_plugin_list
+
     def add_work(self, target_list, plugin_list, force_overwrite=False):
+        sorted_plugin_list = self.group_sort_order(plugin_list)
         for target in target_list:
-            for plugin in plugin_list:
+            for plugin in sorted_plugin_list:
                 # Check if it already in worklist
-                if self.db.session.query(models.Work).filter_by(target_id=target["id"], 
-                    plugin_key=plugin["key"]).count() == 0:
+                if self.db.session.query(models.Work).filter_by(target_id=target["id"],
+                                                                plugin_key=plugin["key"]).count() == 0:
                     # Check if it is already run ;) before adding
-                    if ((force_overwrite is True) or (force_overwrite is False and 
-                        self.plugin_output.PluginAlreadyRun(plugin, target_id=target["id"]) is False)):
+                    is_run = self.plugin_output.PluginAlreadyRun(plugin, target_id=target["id"])
+                    if (force_overwrite is True) or (force_overwrite is False and is_run is False):
                         # If force overwrite is true then plugin output has
                         # to be deleted first
                         if force_overwrite is True:
