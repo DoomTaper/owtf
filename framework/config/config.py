@@ -66,6 +66,7 @@ class Config(BaseComponent, ConfigInterface):
         self.target = self.get_component("target")
         self.db_plugin = self.get_component("db_plugin")
         self.worklist_manager = self.get_component("worklist_manager")
+        self.db_config = self.get_component("db_config")
 
     def initialize_attributes(self):
         self.Config = defaultdict(list)  # General configuration information.
@@ -223,9 +224,9 @@ class Config(BaseComponent, ConfigInterface):
     def LoadProxyConfigurations(self, options):
         if options['InboundProxy']:
             if len(options['InboundProxy']) == 1:
-                options['InboundProxy'] = [self.Get('INBOUND_PROXY_IP'), options['InboundProxy'][0]]
+                options['InboundProxy'] = [self.db_config.Get('INBOUND_PROXY_IP'), options['InboundProxy'][0]]
         else:
-            options['InboundProxy'] = [self.Get('INBOUND_PROXY_IP'), self.Get('INBOUND_PROXY_PORT')]
+            options['InboundProxy'] = [self.db_config.Get('INBOUND_PROXY_IP'), self.db_config.Get('INBOUND_PROXY_PORT')]
         self.Set('INBOUND_PROXY_IP', options['InboundProxy'][0])
         self.Set('INBOUND_PROXY_PORT', options['InboundProxy'][1])
         self.Set('INBOUND_PROXY', ':'.join(options['InboundProxy']))

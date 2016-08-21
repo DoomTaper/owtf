@@ -200,7 +200,7 @@ class PluginHandler(BaseComponent, PluginHandlerInterface):
         return chosen
 
     def force_overwrite(self):
-        return self.config.Get('FORCE_OVERWRITE')
+        return self.config.FrameworkConfigGet('FORCE_OVERWRITE')
 
     def plugin_can_run(self, plugin, show_reason=False):
         """Verify that a plugin can be run by OWTF.
