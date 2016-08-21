@@ -20,6 +20,7 @@ from framework.interface import server, cli
 from framework.http.proxy import proxy, transaction_logger
 from framework.plugin import worker_manager
 from framework.lib.formatters import ConsoleFormatter, FileFormatter
+from framework.db.target_manager import target_required
 
 
 class Core(BaseComponent):
@@ -226,10 +227,12 @@ class Core(BaseComponent):
         # Otherwise, keep WorkerManager alive.
         self.WorkerManager = worker_manager.WorkerManager(keep_working=not options['nowebui'])
 
-    def run_server(self):
+    @target_required
+    def run_server(self, target_id=None):
         """
         This method starts the interface server
         """
+        print(target_id)
         self.interface_server = server.InterfaceServer()
         logging.warn(
             "http://%s:%s <-- Web UI URL",
